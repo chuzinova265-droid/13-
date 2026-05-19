@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Правописание парных согласных в конце слова</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Comic Neue', cursive, sans-serif;
+            background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+            z-index: 10;
+            position: relative;
+        }
+
+        .header {
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+            background-color: #4caf50;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            border: 5px solid #2e7d32;
+            overflow: hidden;
+        }
+
+        .emoji-side {
+            background-color: #4caf50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            flex-shrink: 0;
+        }
+
+        .emoji-svg {
+            width: auto;
+            height: 100%;
+            min-height: 80px;
+            display: block;
+        }
+
+        .header-content {
+            text-align: center;
+            padding: 12px 10px;
+            flex-grow: 1;
+        }
+
+        .header-content h1 {
+            font-size: 1.5rem;
+            margin-bottom: 6px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-weight: 900;
+        }
+
+        .header-content .method-title {
+            font-size: 1.3rem;
+            color: #ffeb3b;
+            font-weight: 900;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .progress-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            height: 36px;
+            margin-top: 3px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+            border: 3px solid #757575;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50, #8bc34a);
+            width: 0%;
+            transition: width 0.5s ease;
+            position: relative;
+            border-radius: 7px;
+        }
+
+        .progress-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: #1b5e20;
+            line-height: 30px;
+            text-shadow: none;
+            letter-spacing: 1px;
+        }
+
+        .game-card {
+            background-color: #ccff90;
+            border-radius: 15px;
+            padding: 20px 15px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            border: 6px solid #8bc34a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+        }
+
+        .rule-line1 {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #1b5e20;
+            background-color: #e8f5e9;
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-align: center;
+            width: 100%;
+            line-height: 1.4;
+        }
+        .rule-line2 {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #bf360c;
+            background-color: #ffe0b2;
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-align: center;
+            width: 100%;
+            letter-spacing: 0.5px;
+        }
+        .rule-line3 {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #1b5e20;
+            background-color: #e8f5e9;
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-align: center;
+            width: 100%;
+            line-height: 1.4;
+        }
+
+        .word-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: nowrap;
+            gap: 5px;
+            margin: 15px 0;
+            background: #fff9c4;
+            padding: 20px 15px;
+            border-radius: 35px;
+            box-shadow: inset 0 0 0 3px #f9a825, 0 8px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .word-letter {
+            font-size: 4rem;
+            font-weight: 900;
+            color: #1b5e20;
+            min-width: auto;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 2px 2px 0 #cddc39;
+            white-space: nowrap;
+        }
+
+        .blank {
+            width: 85px;
+            height: 85px;
+            background-color: #fff3e0;
+            border-radius: 20px;
+            border: 4px dashed #f57c00;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .blank::after {
+            content: "?";
+            font-size: 3rem;
+            font-weight: 900;
+            color: #ffa726;
+            position: absolute;
+        }
+
+        .check-words {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #3e2723;
+            text-align: center;
+            background-color: #d7ccc8;
+            padding: 12px 20px;
+            border-radius: 30px;
+            border: 4px solid #8d6e63;
+            margin: 8px 0;
+            line-height: 1.4;
+            display: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .check-words.show {
+            display: block;
+        }
+
+        .letters-container {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 12px;
+            width: 100%;
+            max-width: 600px;
+            margin-top: 12px;
+        }
+
+        .letter-btn {
+            background-color: #ffcc80;
+            border: 3px solid #ff9800;
+            border-radius: 16px;
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: #333;
+            cursor: pointer;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            animation: wiggle 2s infinite;
+            box-shadow: 0 3px 0 #f57c00;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-2deg); }
+            75% { transform: rotate(2deg); }
+        }
+
+        .letter-btn:active { transform: scale(0.96); }
+        .letter-btn.wrong {
+            background-color: #ff8a80;
+            border-color: #d32f2f;
+            animation: none;
+        }
+        .letter-btn.correct {
+            background-color: #a5d6a7;
+            border-color: #388e3c;
+            animation: none;
+        }
+        .letter-btn.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .next-btn {
+            background-color: #4fc3f7;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 12px 28px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #0288d1;
+            transition: 0.2s;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+        .next-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #0288d1; }
+
+        .hint {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #d81b60;
+            text-align: center;
+            opacity: 0;
+            transition: 0.3s;
+            letter-spacing: 1px;
+        }
+        .hint.show { opacity: 1; }
+
+        .results-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #bbdefb;
+            border-radius: 25px;
+            padding: 30px 20px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border: 6px solid #64b5f6;
+            text-align: center;
+            gap: 20px;
+            position: relative;
+            z-index: 20;
+        }
+
+        .title-with-crown {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .results-title {
+            font-size: 2.5rem;
+            color: #ffd700;
+            background: #2e7d32;
+            display: inline-block;
+            padding: 8px 25px;
+            border-radius: 60px;
+            text-shadow: 3px 3px 0 #1b5e20;
+            font-weight: 900;
+        }
+        .side-crown-svg {
+            width: 60px;
+            height: auto;
+        }
+        .errors-count {
+            font-size: 1.7rem;
+            font-weight: 900;
+            background: white;
+            padding: 8px 20px;
+            border-radius: 40px;
+            color: #d32f2f;
+            border: 3px solid gold;
+        }
+        .results-score {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background-color: #e8f5e9;
+            padding: 10px 20px;
+            border-radius: 25px;
+            color: #1b5e20;
+        }
+        .results-feedback {
+            font-size: 1.3rem;
+            font-weight: bold;
+            background: rgba(255,255,240,0.9);
+            padding: 12px;
+            border-radius: 20px;
+            line-height: 1.4;
+        }
+        .restart-btn {
+            background-color: #ba68c8;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #7b1fa2;
+            transition: 0.2s;
+        }
+        .restart-btn:hover { transform: translateY(-2px); background-color: #ab47bc; }
+
+        .crowns-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+            display: none;
+        }
+        .crown-particle {
+            position: absolute;
+            font-size: 1rem;
+            opacity: 0;
+            animation: flyCrown infinite linear;
+            pointer-events: none;
+        }
+        @keyframes flyCrown {
+            0% {
+                transform: translate(0, 0) rotate(0deg) scale(0.3);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) rotate(720deg) scale(1.3);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .rule-line1, .rule-line2, .rule-line3 { font-size: 1rem; }
+            .word-letter { font-size: 2.5rem; }
+            .blank { width: 60px; height: 60px; }
+            .blank::after { font-size: 2rem; }
+            .letters-container { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+            .letter-btn { font-size: 1.3rem; height: 48px; }
+            .check-words { font-size: 1.1rem; }
+            .results-title { font-size: 1.8rem; }
+            .progress-text { font-size: 1rem; line-height: 30px; }
+            .hint { font-size: 1.2rem; }
+        }
+        @media (max-width: 480px) {
+            .rule-line1, .rule-line2, .rule-line3 { font-size: 0.85rem; }
+            .word-letter { font-size: 2rem; }
+            .blank { width: 50px; height: 50px; }
+            .progress-text { font-size: 0.9rem; }
+            .hint { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div class="emoji-side">
+            <svg class="emoji-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <text x="50%" y="68%" dominant-baseline="middle" text-anchor="middle" font-size="75" font-family="Segoe UI Emoji, Apple Color Emoji">📝</text>
+            </svg>
+        </div>
+        <div class="header-content">
+            <h1>Правописание парных согласных в конце слова</h1>
+            <div class="method-title">Способ проверки № 1</div>
+        </div>
+        <div class="emoji-side">
+            <svg class="emoji-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <text x="50%" y="68%" dominant-baseline="middle" text-anchor="middle" font-size="75" font-family="Segoe UI Emoji, Apple Color Emoji">🎯</text>
+            </svg>
+        </div>
+    </div>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progress-bar">
+            <div class="progress-text" id="progress-text">0/50</div>
+        </div>
+    </div>
+
+    <div class="game-card" id="game-card">
+        <div class="rule-line1">Чтобы проверить парную согласную,</div>
+        <div class="rule-line2">надо позвать на помощь слово "Нет"</div>
+        <div class="rule-line3">или волшебное слово "Множественное число"</div>
+
+        <div class="word-container" id="word-container"></div>
+        <div class="check-words" id="check-words"></div>
+        <div class="hint" id="hint">Запомни!</div>
+        <div class="letters-container" id="letters-container"></div>
+        <div class="controls">
+            <button class="next-btn" id="next-btn">Следующее слово <i class="fas fa-arrow-right"></i></button>
+        </div>
+    </div>
+
+    <div class="results-screen" id="results-screen">
+        <div class="title-with-crown">
+            <div class="results-title" id="results-title">Оценка: 5</div>
+            <svg class="side-crown-svg" viewBox="0 0 100 90" fill="none">
+                <text x="50%" y="70%" dominant-baseline="middle" text-anchor="middle" font-size="70" font-family="Segoe UI Emoji, Apple Color Emoji">👑</text>
+            </svg>
+        </div>
+        <div class="errors-count" id="errorsCount">Допущено: 0 ошибок</div>
+        <div class="results-score" id="results-score">Работа выполнена на 0 баллов из 50</div>
+        <div class="results-feedback" id="results-feedback"></div>
+        <button class="restart-btn" id="restart-btn"><i class="fas fa-redo"></i> Начать заново</button>
+    </div>
+</div>
+
+<div class="crowns-overlay" id="crownsOverlay"></div>
+
+<script>
+    const words = [
+        { word: "дру_", correct: "г", full: "друг", check: "друг (нет друга)" },
+        { word: "стол_", correct: "б", full: "столб", check: "столб (нет столба; столбы)" },
+        { word: "гла_", correct: "з", full: "глаз", check: "глаз (нет глаза)" },
+        { word: "но_", correct: "ж", full: "нож", check: "нож (нет ножа; ножи)" },
+        { word: "сугро_", correct: "б", full: "сугроб", check: "сугроб (нет сугроба; сугробы)" },
+        { word: "гри_", correct: "б", full: "гриб", check: "гриб (нет гриба; грибы)" },
+        { word: "зу_", correct: "б", full: "зуб", check: "зуб (нет зуба; зубы)" },
+        { word: "много дро_", correct: "в", full: "много дров", check: "много дров (дрова)" },
+        { word: "голу_ь", correct: "б", full: "голубь", check: "голубь (нет голубя; голуби)" },
+        { word: "жира_", correct: "ф", full: "жираф", check: "жираф (нет жирафа; жирафы)" },
+        { word: "сне_", correct: "г", full: "снег", check: "снег (нет снега; снега)" },
+        { word: "рука_", correct: "в", full: "рукав", check: "рукав (нет рукава; рукава)" },
+        { word: "кру_", correct: "г", full: "круг", check: "круг (нет круга; круги)" },
+        { word: "пиро_", correct: "г", full: "пирог", check: "пирог (нет пирога; пироги)" },
+        { word: "бере_", correct: "г", full: "берег", check: "берег (нет берега; берега)" },
+        { word: "много яго_", correct: "д", full: "много ягод", check: "много ягод (ягода; ягоды)" },
+        { word: "горо_", correct: "д", full: "город", check: "город (нет города; города)" },
+        { word: "сала_", correct: "т", full: "салат", check: "салат (нет салата; салаты)" },
+        { word: "бро_ь", correct: "в", full: "бровь", check: "бровь (нет брови; брови)" },
+        { word: "ду_", correct: "б", full: "дуб", check: "дуб (нет дуба; дубы)" },
+        { word: "Дави_", correct: "д", full: "Давид", check: "Давид (нет Давида)" },
+        { word: "медве_ь", correct: "д", full: "медведь", check: "медведь (нет медведя; медведи)" },
+        { word: "фла_", correct: "г", full: "флаг", check: "флаг (нет флага; флаги)" },
+        { word: "пля_", correct: "ж", full: "пляж", check: "пляж (нет пляжа; пляжи)" },
+        { word: "эта_", correct: "ж", full: "этаж", check: "этаж (нет этажа; этажи)" },
+        { word: "вра_", correct: "г", full: "враг", check: "враг (нет врага; враги)" },
+        { word: "бага_", correct: "ж", full: "багаж", check: "багаж (нет багажа; багажи)" },
+        { word: "клю_", correct: "в", full: "клюв", check: "клюв (нет клюва; клювы)" },
+        { word: "каранда_", correct: "ш", full: "карандаш", check: "карандаш (нет карандаша; карандаши)" },
+        { word: "экипа_", correct: "ж", full: "экипаж", check: "экипаж (нет экипажа; экипажи)" },
+        { word: "гара_", correct: "ж", full: "гараж", check: "гараж (нет гаража; гаражи)" },
+        { word: "мор_", correct: "ж", full: "морж", check: "морж (нет моржа; моржи)" },
+        { word: "лава_", correct: "ш", full: "лаваш", check: "лаваш (нет лаваша; лаваши)" },
+        { word: "камы_", correct: "ш", full: "камыш", check: "камыш (нет камыша; камыши)" },
+        { word: "моро_", correct: "з", full: "мороз", check: "мороз (нет мороза; морозы)" },
+        { word: "парово_", correct: "з", full: "паровоз", check: "паровоз (нет паровоза; паровозы)" },
+        { word: "гру_", correct: "з", full: "груз", check: "груз (нет груза; грузы)" },
+        { word: "много но_", correct: "г", full: "много ног", check: "много ног (ноги; нога)" },
+        { word: "пару_", correct: "с", full: "парус", check: "парус (нет паруса; паруса)" },
+        { word: "утю_", correct: "г", full: "утюг", check: "утюг (нет утюга; утюги)" },
+        { word: "много ко_", correct: "з", full: "много коз", check: "много коз (нет козы)" },
+        { word: "хле_", correct: "б", full: "хлеб", check: "хлеб (нет хлеба; хлеба)" },
+        { word: "Гле_", correct: "б", full: "Глеб", check: "Глеб (нет Глеба)" },
+        { word: "кара_ь", correct: "с", full: "карась", check: "карась (нет карася; караси)" },
+        { word: "мё_", correct: "д", full: "мёд", check: "мёд (нет мёда)" },
+        { word: "мос_", correct: "т", full: "мост", check: "мост (нет моста; мосты)" },
+        { word: "голо_", correct: "д", full: "голод", check: "голод (нет голода)" },
+        { word: "ло_", correct: "б", full: "лоб", check: "лоб (нет лба; лбы)" },
+        { word: "творо_", correct: "г", full: "творог", check: "творог (нет творога)" },
+        { word: "шка_", correct: "ф", full: "шкаф", check: "шкаф (нет шкафа; шкафы)" }
+    ];
+
+    const availableLetters = ["Б", "В", "Г", "Д", "Ж", "З", "П", "Ф", "К", "Т", "Ш", "С"];
+    let currentWordIndex = 0;
+    let correctAnswers = 0;
+    let gameCompleted = false;
+    let currentCorrectLetter = "";
+    let attemptsCount = 0;
+    let correctOnFirstAttempt = false;
+    let waitingForNext = false;
+    let crownsInterval = null;
+
+    const wordContainer = document.getElementById('word-container');
+    const lettersContainer = document.getElementById('letters-container');
+    const nextBtn = document.getElementById('next-btn');
+    const hintDiv = document.getElementById('hint');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    const gameCard = document.getElementById('game-card');
+    const resultsScreen = document.getElementById('results-screen');
+    const resultsTitleSpan = document.getElementById('results-title');
+    const errorsCountSpan = document.getElementById('errorsCount');
+    const resultsScoreSpan = document.getElementById('results-score');
+    const resultsFeedbackSpan = document.getElementById('results-feedback');
+    const restartBtn = document.getElementById('restart-btn');
+    const checkWordsDiv = document.getElementById('check-words');
+    const crownsOverlay = document.getElementById('crownsOverlay');
+
+    function updateProgress() {
+        let percent = (correctAnswers / words.length) * 100;
+        progressBar.style.width = `${percent}%`;
+        progressText.textContent = `${correctAnswers}/${words.length}`;
+    }
+
+    function loadWord(index) {
+        if (index >= words.length) {
+            endGame();
+            return;
+        }
+        const wordData = words[index];
+        const word = wordData.word;
+        currentCorrectLetter = wordData.correct.toUpperCase();
+        attemptsCount = 0;
+        correctOnFirstAttempt = false;
+        waitingForNext = false;
+
+        wordContainer.innerHTML = '';
+        lettersContainer.innerHTML = '';
+        hintDiv.classList.remove('show');
+        nextBtn.style.display = 'none';
+        checkWordsDiv.classList.remove('show');
+        checkWordsDiv.innerHTML = '';
+
+        const parts = word.split('_');
+        if (parts.length === 2) {
+            const leftSpan = document.createElement('div');
+            leftSpan.className = 'word-letter';
+            leftSpan.textContent = parts[0];
+            wordContainer.appendChild(leftSpan);
+            
+            const blankSpan = document.createElement('div');
+            blankSpan.className = 'blank';
+            wordContainer.appendChild(blankSpan);
+            
+            const rightSpan = document.createElement('div');
+            rightSpan.className = 'word-letter';
+            rightSpan.textContent = parts[1];
+            wordContainer.appendChild(rightSpan);
+        } else {
+            for (let ch of word) {
+                const span = document.createElement('div');
+                if (ch === '_') {
+                    span.className = 'blank';
+                } else {
+                    span.className = 'word-letter';
+                    span.textContent = ch;
+                }
+                wordContainer.appendChild(span);
+            }
+        }
+
+        const shuffled = [...availableLetters].sort(() => Math.random() - 0.5);
+        shuffled.forEach(letter => {
+            const btn = document.createElement('button');
+            btn.className = 'letter-btn';
+            btn.textContent = letter;
+            btn.dataset.letter = letter;
+            btn.addEventListener('click', () => handleLetterClick(letter));
+            lettersContainer.appendChild(btn);
+        });
+    }
+
+    function handleLetterClick(letter) {
+        if (gameCompleted || waitingForNext) return;
+        const blankDiv = document.querySelector('.blank');
+        if (!blankDiv) return;
+        const buttons = document.querySelectorAll('.letter-btn');
+        attemptsCount++;
+
+        if (letter === currentCorrectLetter) {
+            if (attemptsCount === 1) correctOnFirstAttempt = true;
+            waitingForNext = true;
+
+            buttons.forEach(btn => {
+                if (btn.dataset.letter === letter) {
+                    btn.classList.add('correct');
+                    btn.style.animation = 'none';
+                    const rect = btn.getBoundingClientRect();
+                    const blankRect = blankDiv.getBoundingClientRect();
+                    btn.style.position = 'fixed';
+                    btn.style.left = `${rect.left}px`;
+                    btn.style.top = `${rect.top}px`;
+                    btn.style.zIndex = '2000';
+                    setTimeout(() => {
+                        btn.style.transition = 'all 0.7s cubic-bezier(0.34, 1.2, 0.64, 1)';
+                        btn.style.left = `${blankRect.left}px`;
+                        btn.style.top = `${blankRect.top}px`;
+                        btn.style.transform = 'scale(1.5)';
+                        setTimeout(() => {
+                            blankDiv.className = 'word-letter';
+                            blankDiv.textContent = letter;
+                            blankDiv.style.fontSize = '4rem';
+                            btn.style.display = 'none';
+                            const wordData = words[currentWordIndex];
+                            checkWordsDiv.innerHTML = `✅ Проверочное слово — ${wordData.check} ✅`;
+                            checkWordsDiv.classList.add('show');
+                            hintDiv.classList.add('show');
+                            if (correctOnFirstAttempt) {
+                                correctAnswers++;
+                                updateProgress();
+                            }
+                            nextBtn.style.display = 'flex';
+                            buttons.forEach(b => {
+                                if (b !== btn) {
+                                    b.classList.add('disabled');
+                                    b.style.pointerEvents = 'none';
+                                }
+                            });
+                        }, 700);
+                    }, 30);
+                }
+            });
+        } else {
+            const wrongBtn = document.querySelector(`.letter-btn[data-letter="${letter}"]`);
+            if (wrongBtn) {
+                wrongBtn.classList.add('wrong');
+                setTimeout(() => {
+                    wrongBtn.classList.remove('wrong');
+                }, 500);
+            }
+            if (attemptsCount >= 2) {
+                buttons.forEach(btn => {
+                    if (btn.dataset.letter !== currentCorrectLetter) {
+                        btn.classList.add('disabled');
+                        btn.style.pointerEvents = 'none';
+                    }
+                });
+            }
+        }
+    }
+
+    function stopCrownsAnimation() {
+        if (crownsInterval) {
+            clearInterval(crownsInterval);
+            crownsInterval = null;
+        }
+        crownsOverlay.style.display = 'none';
+        crownsOverlay.innerHTML = '';
+    }
+
+    function startCrownsAnimation() {
+        stopCrownsAnimation();
+        crownsOverlay.style.display = 'block';
+        crownsOverlay.innerHTML = '';
+        
+        crownsInterval = setInterval(() => {
+            if (!crownsOverlay || crownsOverlay.style.display !== 'block') return;
+            const count = 5 + Math.floor(Math.random() * 4);
+            for (let i = 0; i < count; i++) {
+                const crown = document.createElement('div');
+                crown.className = 'crown-particle';
+                crown.innerHTML = '👑';
+                const size = 24 + Math.random() * 32;
+                crown.style.fontSize = size + 'px';
+                const startX = Math.random() * 100;
+                const startY = Math.random() * 100;
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 40 + Math.random() * 130;
+                const tx = (Math.cos(angle) * distance) + 'vw';
+                const ty = (Math.sin(angle) * distance) + 'vh';
+                crown.style.setProperty('--tx', tx);
+                crown.style.setProperty('--ty', ty);
+                crown.style.left = startX + '%';
+                crown.style.top = startY + '%';
+                const duration = 3 + Math.random() * 4;
+                crown.style.animation = `flyCrown ${duration}s linear forwards`;
+                crownsOverlay.appendChild(crown);
+                setTimeout(() => { if(crown && crown.remove) crown.remove(); }, duration * 1000);
+            }
+        }, 200);
+    }
+
+    function endGame() {
+        gameCompleted = true;
+        gameCard.style.display = 'none';
+        resultsScreen.style.display = 'flex';
+        
+        const errors = words.length - correctAnswers;
+        let errorText = "";
+        if (errors === 1) errorText = "ошибка";
+        else if (errors >= 2 && errors <= 4) errorText = "ошибки";
+        else errorText = "ошибок";
+        errorsCountSpan.textContent = `Допущено: ${errors} ${errorText}`;
+        
+        const totalScore = correctAnswers;
+        let titleText = "";
+        let feedbackHtml = "";
+        
+        if (totalScore >= 48 && totalScore <= 50) {
+            titleText = "Оценка: 5";
+            feedbackHtml = "Правило знаешь и умеешь применять. Ты заслужил корону знатока правила!";
+        } 
+        else if (totalScore >= 37 && totalScore <= 47) {
+            titleText = "Оценка: 4";
+            feedbackHtml = "Правило знаешь, но надо еще потренироваться, чтобы получить корону знатока правила!";
+        } 
+        else if (totalScore >= 20 && totalScore <= 36) {
+            titleText = "Оценка: 3";
+            feedbackHtml = "Не ленись, тренируйся, чтобы получить корону знатока правила!";
+        } 
+        else {
+            titleText = "Оценка: 2";
+            feedbackHtml = "Плохо! Заставь себя выучить правило и тренироваться, чтобы получить корону знатока правила!";
+        }
+        
+        resultsTitleSpan.textContent = titleText;
+        resultsFeedbackSpan.innerHTML = feedbackHtml;
+        resultsScoreSpan.textContent = `Работа выполнена на ${correctAnswers} баллов из 50`;
+        
+        startCrownsAnimation();
+    }
+
+    nextBtn.addEventListener('click', () => {
+        if (currentWordIndex < words.length - 1) {
+            currentWordIndex++;
+            loadWord(currentWordIndex);
+        } else {
+            endGame();
+        }
+    });
+
+    restartBtn.addEventListener('click', () => {
+        stopCrownsAnimation();
+        currentWordIndex = 0;
+        correctAnswers = 0;
+        gameCompleted = false;
+        updateProgress();
+        loadWord(0);
+        gameCard.style.display = 'flex';
+        resultsScreen.style.display = 'none';
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+        loadWord(0);
+    });
+</script>
+</body>
+</html>
